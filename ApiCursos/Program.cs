@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ApiCursos.Context;
+using ApiCursos.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,6 +12,10 @@ builder.Services.AddSwaggerGen();
 var connection = builder.Configuration.GetConnectionString("MySql");
 builder.Services.AddDbContext<Db>(options =>
 options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
+
+builder.Services.AddScoped<AlunoService>();
+builder.Services.AddScoped<CursoService>();
+builder.Services.AddScoped<UsuarioService>();
 
 var app = builder.Build();
 
