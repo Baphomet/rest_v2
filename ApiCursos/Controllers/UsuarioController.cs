@@ -1,7 +1,7 @@
 ﻿using ApiCursos.DTOs;
 using ApiCursos.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiCursos.Controllers
 {
@@ -9,39 +9,80 @@ namespace ApiCursos.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        public readonly UsuarioService _service;
+        private readonly UsuarioService _service;
 
-        public UsuarioController(UsuarioService service) 
+        public UsuarioController(UsuarioService service)
         {
             _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(await _service.GetAllUsuarios());
+            var usuarios = await _service.GetAllUsuarios();
+            return Ok(usuarios);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] UsuarioDTO dto) 
+        public async Task<IActionResult> Add([FromBody] UsuarioDTO dto)
         {
-        string resultado = await _service.AddUsuario(dto);
-            if (resultado.Contains("Não")) return BadRequest(resultado);
-            return Ok(resultado);
+            try
+            {
+                await _service.AddUsuario(dto);
+                return StatusCode(201, "Usuário criado com sucesso.");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);        
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(500, "Erro ao acessar o banco de dados.");
+            }
         }
+
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UsuarioDTO dto) 
+        public async Task<IActionResult> Update(Guid id, [FromBody] UsuarioDTO dto)
         {
-        string resultado = await _service.UpdateUsuario(id, dto);
-            if (resultado.Contains("Não")) return BadRequest(resultado);
-            return Ok(resultado);
+            try
+            {
+                await _service.UpdateUsuario(id, dto);
+                return Ok("Usuário atualizado com sucesso.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message); 
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);       
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(500, "Erro ao atualizar o usuário.");
+            }
         }
+
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(Guid id) 
+        public async Task<IActionResult> Delete(Guid id)
         {
-            string resultado = await _service.DeleteUsuario(id);
-            if (resultado.Contains("Não")) return BadRequest(resultado);
-            return Ok(resultado);
+            try
+            {
+                await _service.DeleteUsuario(id);
+                return Ok("Usuário deletado com sucesso.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);          
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(ex.Message);          
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(500, "Erro ao acessar o banco de dados.");
+            }
         }
     }
 }
