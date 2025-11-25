@@ -22,43 +22,68 @@ namespace ApiCursos.Services
                 .ToListAsync();
         }
 
-        public async Task<string> AddAluno(AlunoDTO dto)
+        public async Task AddAluno(AlunoDTO dto)
         {
-            Aluno aluno = new Aluno();
-            aluno.Nome = dto.Nome;
-            aluno.Email = dto.Email;
-            aluno.DataNascimento = dto.DataNascimento;
+            if (string.IsNullOrWhiteSpace(dto.Nome))
+                throw new ArgumentException("O nome do aluno é obrigatório.");
 
-            await _context.Alunos.AddAsync(aluno);
-            await _context.SaveChangesAsync();
+            var aluno = new Aluno
+            {
+                Nome = dto.Nome,
+                DataNascimento = dto.DataNascimento
+            };
 
-            return "Aluno adicionado com sucesso";
+            try
+            {
+                await _context.Alunos.AddAsync(aluno);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                throw new DbUpdateException("Erro ao inserir aluno no banco de dados.");
+            }
         }
 
-        public async Task<string> UpdateAluno(Guid id, AlunoDTO dto)
+        public async Task UpdateAluno(Guid id, AlunoDTO dto)
         {
             var aluno = await _context.Alunos.FirstOrDefaultAsync(a => a.Id == id);
-            if (aluno == null) return "Aluno não encontrado";
+
+            if (aluno == null)
+                throw new KeyNotFoundException("Aluno não encontrado.");
+
+            if (string.IsNullOrWhiteSpace(dto.Nome))
+                throw new ArgumentException("O nome do aluno é obrigatório.");
 
             aluno.Nome = dto.Nome;
-            aluno.Email = dto.Email;
             aluno.DataNascimento = dto.DataNascimento;
 
-            _context.Alunos.Update(aluno);
-            await _context.SaveChangesAsync();
-
-            return "Aluno atualizado com sucesso";
+            try
+            {
+                _context.Alunos.Update(aluno);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                throw new DbUpdateException("Erro ao atualizar aluno no banco de dados.");
+            }
         }
 
-        public async Task<string> DeleteAluno(Guid id)
+        public async Task DeleteAluno(Guid id)
         {
             var aluno = await _context.Alunos.FindAsync(id);
-            if (aluno == null) return "Aluno não encontrado";
 
-            _context.Alunos.Remove(aluno);
-            await _context.SaveChangesAsync();
+            if (aluno == null)
+                throw new KeyNotFoundException("Aluno não encontrado.");
 
-            return "Aluno deletado com sucesso";
+            try
+            {
+                _context.Alunos.Remove(aluno);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                throw new InvalidOperationException("Erro de integridade ao tentar deletar o aluno.");
+            }
         }
     }
 }
