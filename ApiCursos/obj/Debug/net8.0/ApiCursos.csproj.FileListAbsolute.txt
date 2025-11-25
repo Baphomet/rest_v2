@@ -1,0 +1,8 @@
+C:\Users\User\source\repos\ApiCursos\ApiCursos\obj\Debug\net8.0\ApiCursos.csproj.AssemblyReference.cache
+C:\Users\User\source\repos\ApiCursos\ApiCursos\obj\Debug\net8.0\ApiCursos.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\source\repos\ApiCursos\ApiCursos\obj\Debug\net8.0\ApiCursos.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\ApiCursos\ApiCursos\obj\Debug\net8.0\ApiCursos.AssemblyInfo.cs
+C:\Users\User\source\repos\ApiCursos\ApiCursos\obj\Debug\net8.0\ApiCursos.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\ApiCursos\ApiCursos\obj\Debug\net8.0\ApiCursos.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\User\source\repos\ApiCursos\ApiCursos\obj\Debug\net8.0\ApiCursos.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\User\source\repos\ApiCursos\ApiCursos\obj\Debug\net8.0\ApiCursos.sourcelink.json
