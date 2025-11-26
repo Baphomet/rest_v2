@@ -1,5 +1,6 @@
 ﻿using ApiCursos.Context;
 using ApiCursos.DTOs;
+using ApiCursos.Helpers;
 using ApiCursos.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,7 @@ namespace ApiCursos.Services
 {
     public class UsuarioService
     {
-        public readonly Db _context;
+        private readonly Db _context;
 
         public UsuarioService(Db context)
         {
@@ -32,7 +33,7 @@ namespace ApiCursos.Services
             {
                 Nome = dto.Nome,
                 Login = dto.Login,
-                Senha = dto.Senha
+                Senha = PasswordHelper.Hash(dto.Senha)   
             };
 
             try
@@ -62,7 +63,7 @@ namespace ApiCursos.Services
 
             usuario.Nome = dto.Nome;
             usuario.Login = dto.Login;
-            usuario.Senha = dto.Senha;
+            usuario.Senha = PasswordHelper.Hash(dto.Senha);   
 
             try
             {
