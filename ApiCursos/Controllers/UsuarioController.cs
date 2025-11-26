@@ -84,5 +84,28 @@ namespace ApiCursos.Controllers
                 return StatusCode(500, "Erro ao acessar o banco de dados.");
             }
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDTO dto, [FromServices] IConfiguration config)
+        {
+            try
+            {
+                var token = await _service.LoginAsync(dto, config);
+                return Ok(new { Token = token });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(500, "Erro interno ao gerar token.");
+            }
+        }
+
     }
 }
