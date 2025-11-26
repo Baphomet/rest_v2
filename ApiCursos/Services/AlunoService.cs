@@ -22,6 +22,20 @@ namespace ApiCursos.Services
                 .ToListAsync();
         }
 
+        public async Task<Aluno> GetAlunoById(Guid id)
+        {
+            var aluno = await _context.Alunos
+                .Include(a => a.AlunoCursos)
+                .ThenInclude(ac => ac.Curso)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (aluno == null)
+                throw new KeyNotFoundException("Aluno não encontrado.");
+
+            return aluno;
+        }
+
+
         public async Task AddAluno(AlunoDTO dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Nome))

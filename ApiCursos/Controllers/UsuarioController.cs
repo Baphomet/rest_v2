@@ -23,6 +23,25 @@ namespace ApiCursos.Controllers
             return Ok(usuarios);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            try
+            {
+                var usuario = await _service.GetUsuarioById(id);
+                return Ok(usuario);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(500, "Erro ao buscar usuário."); 
+            }
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] UsuarioDTO dto)
         {

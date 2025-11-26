@@ -22,7 +22,26 @@ namespace ApiCursos.Controllers
             var cursos = await _service.GetAllCursos();
             return Ok(cursos);
         }
- 
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            try
+            {
+                var curso = await _service.GetCursoById(id);
+                return Ok(curso);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message); 
+            }
+            catch
+            {
+                return StatusCode(500, "Erro ao buscar curso."); 
+            }
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CursoDTO dto)
         {

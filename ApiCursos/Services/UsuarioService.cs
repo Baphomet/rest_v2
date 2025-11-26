@@ -24,6 +24,16 @@ namespace ApiCursos.Services
             return await _context.Usuarios.ToListAsync();
         }
 
+        public async Task<Usuario> GetUsuarioById(Guid id)
+        {
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (usuario == null)
+                throw new KeyNotFoundException("Usuário não encontrado.");
+
+            return usuario;
+        }
+
         public async Task AddUsuario(UsuarioDTO dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Nome) ||
