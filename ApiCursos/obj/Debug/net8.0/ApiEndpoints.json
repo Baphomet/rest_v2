@@ -233,22 +233,6 @@
   },
   {
     "ContainingType": "ApiCursos.Controllers.UsuarioController",
-    "Method": "Add",
-    "RelativePath": "api/Usuario",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "ApiCursos.DTOs.UsuarioDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ApiCursos.Controllers.UsuarioController",
     "Method": "GetById",
     "RelativePath": "api/Usuario/{id}",
     "HttpMethod": "GET",
@@ -311,6 +295,22 @@
       {
         "Name": "dto",
         "Type": "ApiCursos.DTOs.LoginDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiCursos.Controllers.UsuarioController",
+    "Method": "Add",
+    "RelativePath": "api/Usuario/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ApiCursos.DTOs.UsuarioDTO",
         "IsRequired": true
       }
     ],
