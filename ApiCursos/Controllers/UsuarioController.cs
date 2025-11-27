@@ -44,7 +44,7 @@ namespace ApiCursos.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> Add([FromBody] UsuarioDTO dto)
         {
             try
