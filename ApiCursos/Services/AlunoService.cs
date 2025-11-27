@@ -30,16 +30,15 @@ namespace ApiCursos.Services
                 .FirstOrDefaultAsync(a => a.Id == id);
 
             if (aluno == null)
-                throw new KeyNotFoundException("Aluno não encontrado.");
+                throw new KeyNotFoundException("Aluno não encontrado."); // gera 404 Not Found no controller
 
             return aluno;
         }
 
-
         public async Task AddAluno(AlunoDTO dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Nome))
-                throw new ArgumentException("O nome do aluno é obrigatório.");
+                throw new ArgumentException("O nome do aluno é obrigatório."); // gera 400 Bad Request
 
             var aluno = new Aluno
             {
@@ -54,7 +53,8 @@ namespace ApiCursos.Services
             }
             catch (DbUpdateException)
             {
-                throw new DbUpdateException("Erro ao inserir aluno no banco de dados.");
+                throw new DbUpdateException("Erro ao inserir aluno no banco de dados."); 
+                // o controller transforma isso em 500 Internal Server Error
             }
         }
 
@@ -63,10 +63,10 @@ namespace ApiCursos.Services
             var aluno = await _context.Alunos.FirstOrDefaultAsync(a => a.Id == id);
 
             if (aluno == null)
-                throw new KeyNotFoundException("Aluno não encontrado.");
+                throw new KeyNotFoundException("Aluno não encontrado."); // gera 404 Not Found
 
             if (string.IsNullOrWhiteSpace(dto.Nome))
-                throw new ArgumentException("O nome do aluno é obrigatório.");
+                throw new ArgumentException("O nome do aluno é obrigatório."); // gera 400 Bad Request
 
             aluno.Nome = dto.Nome;
             aluno.DataNascimento = dto.DataNascimento;
@@ -79,6 +79,7 @@ namespace ApiCursos.Services
             catch (DbUpdateException)
             {
                 throw new DbUpdateException("Erro ao atualizar aluno no banco de dados.");
+                // no controller isso vira 500 Internal Server Error
             }
         }
 
@@ -87,7 +88,7 @@ namespace ApiCursos.Services
             var aluno = await _context.Alunos.FindAsync(id);
 
             if (aluno == null)
-                throw new KeyNotFoundException("Aluno não encontrado.");
+                throw new KeyNotFoundException("Aluno não encontrado."); // gera 404 Not Found
 
             try
             {
@@ -97,6 +98,7 @@ namespace ApiCursos.Services
             catch (DbUpdateException)
             {
                 throw new InvalidOperationException("Erro de integridade ao tentar deletar o aluno.");
+                // no controller gera 409 Conflict
             }
         }
     }
