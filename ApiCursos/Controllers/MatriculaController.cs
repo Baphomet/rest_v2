@@ -1,4 +1,4 @@
-﻿using ApiCursos.DTOs;
+using ApiCursos.DTOs;
 using ApiCursos.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,18 +24,22 @@ namespace ApiCursos.Controllers
             {
                 await _service.MatricularAsync(dto.AlunoId, dto.CursoId);
                 return Ok("Aluno matriculado com sucesso!");
+                // 200 OK — matrícula realizada corretamente
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(ex.Message); 
+                return NotFound(ex.Message);
+                // 404 Not Found — aluno ou curso não encontrado para matrícula
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(ex.Message); 
+                return Conflict(ex.Message);
+                // 409 Conflict — aluno já matriculado ou regra de negócio impedindo a operação
             }
             catch
             {
-                return StatusCode(500, "Erro ao realizar matrícula."); 
+                return StatusCode(500, "Erro ao realizar matrícula.");
+                // 500 Internal Server Error — erro inesperado no servidor
             }
         }
 
@@ -46,14 +50,17 @@ namespace ApiCursos.Controllers
             {
                 await _service.RemoverMatriculaAsync(dto.AlunoId, dto.CursoId);
                 return Ok("Matrícula removida com sucesso!");
+                // 200 OK — matrícula removida corretamente
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(ex.Message); 
+                return NotFound(ex.Message);
+                // 404 Not Found — matrícula não encontrada para remoção
             }
             catch
             {
-                return StatusCode(500, "Erro ao remover matrícula."); 
+                return StatusCode(500, "Erro ao remover matrícula.");
+                // 500 Internal Server Error — falha inesperada ao remover
             }
         }
 
@@ -64,14 +71,17 @@ namespace ApiCursos.Controllers
             {
                 var cursos = await _service.GetCursosDoAlunoAsync(alunoId);
                 return Ok(cursos);
+                // 200 OK — lista de cursos do aluno retornada com sucesso
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(ex.Message); 
+                return NotFound(ex.Message);
+                // 404 Not Found — aluno não encontrado
             }
             catch
             {
                 return StatusCode(500, "Erro ao buscar cursos do aluno.");
+                // 500 Internal Server Error — erro inesperado ao consultar dados
             }
         }
 
@@ -82,17 +92,18 @@ namespace ApiCursos.Controllers
             {
                 var alunos = await _service.GetAlunosDoCursoAsync(cursoId);
                 return Ok(alunos);
+                // 200 OK — lista de alunos do curso retornada com sucesso
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(ex.Message); 
+                return NotFound(ex.Message);
+                // 404 Not Found — curso não encontrado
             }
             catch
             {
-                return StatusCode(500, "Erro ao buscar alunos do curso."); 
+                return StatusCode(500, "Erro ao buscar alunos do curso.");
+                // 500 Internal Server Error — falha inesperada ao carregar alunos
             }
         }
-
-
     }
 }
