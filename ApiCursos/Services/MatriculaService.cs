@@ -17,17 +17,20 @@ namespace ApiCursos.Services
         {
             var aluno = await _context.Alunos.FindAsync(alunoId);
             if (aluno == null)
-                throw new KeyNotFoundException("Aluno não encontrado.");
+                throw new KeyNotFoundException("Aluno não encontrado."); 
+                // gera 404 Not Found — aluno inexistente
 
             var curso = await _context.Cursos.FindAsync(cursoId);
             if (curso == null)
-                throw new KeyNotFoundException("Curso não encontrado.");
+                throw new KeyNotFoundException("Curso não encontrado."); 
+                // gera 404 Not Found — curso inexistente
 
             var existe = await _context.AlunosCursos
                 .AnyAsync(ac => ac.AlunoId == alunoId && ac.CursoId == cursoId);
 
             if (existe)
-                throw new InvalidOperationException("O aluno já está matriculado neste curso.");
+                throw new InvalidOperationException("O aluno já está matriculado neste curso."); 
+                // gera 409 Conflict — matrícula duplicada
 
             var matricula = new AlunoCurso
             {
@@ -36,7 +39,8 @@ namespace ApiCursos.Services
             };
 
             _context.AlunosCursos.Add(matricula);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); 
+            // sucesso → normalmente o controller retorna 201 Created
         }
 
         public async Task RemoverMatriculaAsync(Guid alunoId, Guid cursoId)
@@ -45,10 +49,12 @@ namespace ApiCursos.Services
                 .FirstOrDefaultAsync(ac => ac.AlunoId == alunoId && ac.CursoId == cursoId);
 
             if (matricula == null)
-                throw new KeyNotFoundException("Matrícula não encontrada.");
+                throw new KeyNotFoundException("Matrícula não encontrada."); 
+                // gera 404 Not Found — não existe essa matrícula
 
             _context.AlunosCursos.Remove(matricula);
             await _context.SaveChangesAsync();
+            // sucesso → controller retorna 200 OK
         }
 
         public async Task<List<Curso>> GetCursosDoAlunoAsync(Guid alunoId)
@@ -59,11 +65,13 @@ namespace ApiCursos.Services
                 .FirstOrDefaultAsync(a => a.Id == alunoId);
 
             if (aluno == null)
-                throw new KeyNotFoundException("Aluno não encontrado.");
+                throw new KeyNotFoundException("Aluno não encontrado."); 
+                // gera 404 Not Found
 
             return aluno.AlunoCursos
                 .Select(ac => ac.Curso)
-                .ToList();
+                .ToList(); 
+            // sucesso → controller retorna 200 OK
         }
 
         public async Task<List<Aluno>> GetAlunosDoCursoAsync(Guid cursoId)
@@ -74,13 +82,13 @@ namespace ApiCursos.Services
                 .FirstOrDefaultAsync(c => c.Id == cursoId);
 
             if (curso == null)
-                throw new KeyNotFoundException("Curso não encontrado.");
+                throw new KeyNotFoundException("Curso não encontrado."); 
+                // gera 404 Not Found
 
             return curso.AlunoCursos
                 .Select(ac => ac.Aluno)
-                .ToList();
+                .ToList(); 
+            // sucesso → controller retorna 200 OK
         }
-
-
     }
 }
