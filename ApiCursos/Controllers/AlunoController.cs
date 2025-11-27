@@ -1,10 +1,12 @@
 using ApiCursos.DTOs;
 using ApiCursos.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiCursos.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AlunoController : ControllerBase

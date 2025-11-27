@@ -1,9 +1,11 @@
 ﻿using ApiCursos.DTOs;
 using ApiCursos.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiCursos.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MatriculaController : ControllerBase

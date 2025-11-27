@@ -158,6 +158,70 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ApiCursos.Controllers.MatriculaController",
+    "Method": "Matricular",
+    "RelativePath": "api/Matricula",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ApiCursos.DTOs.MatriculaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiCursos.Controllers.MatriculaController",
+    "Method": "Remover",
+    "RelativePath": "api/Matricula",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ApiCursos.DTOs.MatriculaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiCursos.Controllers.MatriculaController",
+    "Method": "GetCursosDoAluno",
+    "RelativePath": "api/Matricula/aluno/{alunoId}/cursos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "alunoId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiCursos.Controllers.MatriculaController",
+    "Method": "GetAlunosDoCurso",
+    "RelativePath": "api/Matricula/curso/{cursoId}/alunos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cursoId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ApiCursos.Controllers.UsuarioController",
     "Method": "GetAll",
     "RelativePath": "api/Usuario",

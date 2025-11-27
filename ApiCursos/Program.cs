@@ -20,6 +20,7 @@ options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
 builder.Services.AddScoped<AlunoService>();
 builder.Services.AddScoped<CursoService>();
 builder.Services.AddScoped<UsuarioService>();
+builder.Services.AddScoped<MatriculaService>();
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
 
@@ -56,9 +57,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 

@@ -1,10 +1,12 @@
 ﻿using ApiCursos.DTOs;
 using ApiCursos.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiCursos.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuarioController : ControllerBase
@@ -41,7 +43,7 @@ namespace ApiCursos.Controllers
             }
         }
 
-
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] UsuarioDTO dto)
         {
@@ -105,6 +107,7 @@ namespace ApiCursos.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginDTO dto, [FromServices] IConfiguration config)
         {
             try
