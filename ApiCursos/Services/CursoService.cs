@@ -30,16 +30,17 @@ namespace ApiCursos.Services
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (curso == null)
-                throw new KeyNotFoundException("Curso não encontrado.");
+                throw new KeyNotFoundException("Curso não encontrado."); 
+                // gera 404 Not Found no controller
 
             return curso;
         }
 
-
         public async Task AddCurso(CursoDTO dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Titulo))
-                throw new ArgumentException("O título do curso é obrigatório.");
+                throw new ArgumentException("O título do curso é obrigatório."); 
+                // gera 400 Bad Request
 
             var curso = new Curso
             {
@@ -54,7 +55,8 @@ namespace ApiCursos.Services
             }
             catch (DbUpdateException)
             {
-                throw new DbUpdateException("Erro ao inserir curso no banco de dados.");
+                throw new DbUpdateException("Erro ao inserir curso no banco de dados."); 
+                // gera 500 Internal Server Error
             }
         }
 
@@ -63,10 +65,12 @@ namespace ApiCursos.Services
             var curso = await _context.Cursos.FirstOrDefaultAsync(c => c.Id == id);
 
             if (curso == null)
-                throw new KeyNotFoundException("Curso não encontrado.");
+                throw new KeyNotFoundException("Curso não encontrado."); 
+                // gera 404 Not Found
 
             if (string.IsNullOrWhiteSpace(dto.Titulo))
-                throw new ArgumentException("O título do curso é obrigatório.");
+                throw new ArgumentException("O título do curso é obrigatório."); 
+                // gera 400 Bad Request
 
             curso.Titulo = dto.Titulo;
             curso.Descricao = dto.Descricao;
@@ -78,7 +82,8 @@ namespace ApiCursos.Services
             }
             catch (DbUpdateException)
             {
-                throw new DbUpdateException("Erro ao atualizar curso no banco de dados.");
+                throw new DbUpdateException("Erro ao atualizar curso no banco de dados."); 
+                // gera 500 Internal Server Error
             }
         }
 
@@ -87,7 +92,8 @@ namespace ApiCursos.Services
             var curso = await _context.Cursos.FindAsync(id);
 
             if (curso == null)
-                throw new KeyNotFoundException("Curso não encontrado.");
+                throw new KeyNotFoundException("Curso não encontrado."); 
+                // gera 404 Not Found
 
             try
             {
@@ -96,7 +102,8 @@ namespace ApiCursos.Services
             }
             catch (DbUpdateException)
             {
-                throw new InvalidOperationException("Erro de integridade ao tentar deletar o curso.");
+                throw new InvalidOperationException("Erro de integridade ao tentar deletar o curso."); 
+                // gera 409 Conflict no controller
             }
         }
     }
