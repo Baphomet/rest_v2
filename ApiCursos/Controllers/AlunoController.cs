@@ -22,7 +22,7 @@ namespace ApiCursos.Controllers
         public async Task<IActionResult> GetAll()
         {
             var alunos = await _service.GetAllAlunos();
-            return Ok(alunos);
+            return Ok(alunos); // 200 OK — requisição bem-sucedida
         }
 
         [HttpGet("{id}")]
@@ -31,15 +31,15 @@ namespace ApiCursos.Controllers
             try
             {
                 var aluno = await _service.GetAlunoById(id);
-                return Ok(aluno);
+                return Ok(aluno); // 200 OK — encontrado com sucesso
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(ex.Message); 
+                return NotFound(ex.Message); // 404 Not Found — quando o ID não existe no banco
             }
             catch
             {
-                return StatusCode(500, "Erro ao buscar aluno.");
+                return StatusCode(500, "Erro ao buscar aluno."); // 500 Internal Server Error — erro inesperado no servidor
             }
         }
 
@@ -50,15 +50,15 @@ namespace ApiCursos.Controllers
             try
             {
                 await _service.AddAluno(dto);
-                return StatusCode(201, "Aluno criado com sucesso.");
+                return StatusCode(201, "Aluno criado com sucesso.");  // 201 Created — recurso criado com sucesso
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message); 
+                return BadRequest(ex.Message); // 400 Bad Request — erro de validação (dados inválidos)
             }
             catch (DbUpdateException)
             {
-                return StatusCode(500, "Erro ao acessar o banco de dados."); 
+                return StatusCode(500, "Erro ao acessar o banco de dados.");  // 500 — erro ao tentar salvar no banco
             }
         }
 
@@ -68,19 +68,19 @@ namespace ApiCursos.Controllers
             try
             {
                 await _service.UpdateAluno(id, dto);
-                return Ok("Aluno atualizado com sucesso.");
+                return Ok("Aluno atualizado com sucesso."); // 200 OK — atualização feita
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(ex.Message); 
+                return NotFound(ex.Message); // 404 — o aluno não existe
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message); 
+                return BadRequest(ex.Message);  // 400 — validação falhou (ex.: nome vazio, idade inválida)
             }
             catch (DbUpdateException)
             {
-                return StatusCode(500, "Erro ao atualizar o aluno."); 
+                return StatusCode(500, "Erro ao atualizar o aluno."); // 500 — falha no banco durante o update
             }
         }
 
@@ -90,19 +90,19 @@ namespace ApiCursos.Controllers
             try
             {
                 await _service.DeleteAluno(id);
-                return Ok("Aluno deletado com sucesso.");
+                return Ok("Aluno deletado com sucesso."); // 200 OK — excluído
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(ex.Message); 
+                return NotFound(ex.Message); // 404 — o aluno não existe
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(ex.Message); 
+                return Conflict(ex.Message); // 409 Conflict — algo impede o delete (ex.: aluno matriculado)
             }
             catch (DbUpdateException)
             {
-                return StatusCode(500, "Erro ao acessar o banco de dados."); 
+                return StatusCode(500, "Erro ao acessar o banco de dados."); // 500 — falha no banco durante a remoção
             }
         }
     }
